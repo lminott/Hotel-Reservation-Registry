@@ -1,0 +1,64 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class HotelReservationRegistry {
+	public HashMap<String,ArrayList<Room>> reservations;
+	public int numRooms;
+	public boolean[] roomsBooked=new boolean[numRooms];
+    public HotelReservationRegistry(int numRooms, boolean[] roomsBooked,HashMap<String, ArrayList<Room>> reservations) {
+	 this.numRooms=numRooms;
+	 this.roomsBooked=roomsBooked;
+   	 this.reservations=reservations;
+    }
+public void bookReservation(String guest,int roomNumber,int time) throws Exception {
+     reservations.putIfAbsent(guest,new ArrayList<Room>());
+     if(roomsBooked[roomNumber]==true) {
+    	 throw new Exception("Cannot book a reservation for a room that is already reserved.");
+     }
+     reservations.get(guest).add(new Room(roomNumber,time));
+     roomsBooked[roomNumber]=true;
+     return;
+}
+public void cancelReservation(int roomNumber,String guest) throws Exception {
+	  if(roomsBooked[roomNumber]==false) {
+		  throw new Exception("Cannot cancel a reservation that does not exist");
+	  }
+	  for(Room room: reservations.get(guest)) {
+		  if(room.roomNumber==roomNumber) {
+			  reservations.get(guest).remove(room);
+			  roomsBooked[room.roomNumber]=false;
+		  }
+	  }
+	  return;
+ }
+public void updateReservationTime(String guest,int roomNumber,int newTime) throws Exception{
+	if(roomsBooked[roomNumber]==false) {
+		 throw new Exception("Cannot update reservation time for a room that is not reserved");
+	}
+	for(Room room: reservations.get(guest)) {
+		  if(room.roomNumber==roomNumber) {
+			  reservations.get(guest).remove(room);
+			  reservations.get(guest).add(new Room(roomNumber,newTime));
+		  }
+	  }
+	return;
+  }
+public void changeRooms(String guest,int roomNumber,int newRoomNumber,int time) throws Exception {
+	if(roomsBooked[roomNumber]==false) {
+		throw new Exception("Invalid Entry. Cannot change from a room that has no active reservatiom");
+	}
+	if(roomsBooked[newRoomNumber]==true) {
+		throw new Exception("Cannot change to a room that is already occupied");
+	}
+	for(Room room: reservations.get(guest)) {
+		  if(room.roomNumber==roomNumber) {
+			  reservations.get(guest).remove(room);
+			  roomsBooked[room.roomNumber]=false;
+			  break;
+		  }
+	  }
+	reservations.get(guest).add(new Room(newRoomNumber,time));
+	roomsBooked[newRoomNumber]=true;
+	return;
+  }
+}
