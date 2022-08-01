@@ -45,7 +45,7 @@ public void updateReservationTime(String guest,int roomNumber,int newTime) throw
   }
 public void changeRooms(String guest,int roomNumber,int newRoomNumber,int time) throws Exception {
 	if(roomsBooked[roomNumber]==false) {
-		throw new Exception("Invalid Entry. Cannot change from a room that has no active reservatiom");
+		throw new Exception("Invalid Entry. Cannot change from a room that has no active reservation");
 	}
 	if(roomsBooked[newRoomNumber]==true) {
 		throw new Exception("Cannot change to a room that is already occupied");
