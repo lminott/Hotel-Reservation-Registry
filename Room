@@ -1,0 +1,8 @@
+public class Room {
+	int roomNumber;
+	  int time;
+	  public Room(int roomNumber,int time) {
+		  this.time=time;
+		  this.roomNumber=roomNumber;
+	  }
+}
